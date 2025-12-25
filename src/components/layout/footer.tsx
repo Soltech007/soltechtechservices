@@ -7,6 +7,31 @@ import Image from "next/image";
 import { useRouter, usePathname } from "next/navigation";
 import { useState } from "react";
 
+// ============ DATA MATCHING HEADER ============
+const soltechVerticals = [
+    { name: "BizAI Hacks", slug: "bizaihacks", url: "https://bizaihacks.com" },
+    { name: "SOLTECH Nexus", slug: "soltechnexus", url: "https://soltechnexus.com" },
+    { name: "SOLTECH 360 Ads", slug: "soltech360ads", url: "https://soltech360ads.com" },
+];
+
+const technologiesExpert = [
+    { title: "Cloud Computing", slug: "cloud-computing" },
+    { title: "Artificial Intelligence", slug: "artificial-intelligence" },
+    { title: "Web Development", slug: "web-development" },
+    { title: "IoT & Embedded Systems", slug: "iot-embedded" },
+    { title: "AI & Automation", slug: "ai-automation" },
+    { title: "Cyber Security", slug: "cyber-security" },
+    { title: "Database & Analytics", slug: "database-analytics" },
+];
+
+const businessIndustries = [
+    { title: "Retail Industry", slug: "retail" },
+    { title: "Automobile Industry", slug: "automobile" },
+    { title: "Healthcare & Wellness", slug: "healthcare" },
+    { title: "Mining & Quarrying", slug: "mining" },
+    { title: "Agriculture & Allied", slug: "agriculture" },
+];
+
 export function Footer() {
     const router = useRouter();
     const pathname = usePathname();
@@ -27,65 +52,23 @@ export function Footer() {
         }, 1000);
     };
 
-    const handleSmoothScroll = (page: string, sectionId: string) => {
-        if (pathname === page) {
-            const element = document.getElementById(sectionId);
-            if (element) {
-                const headerOffset = 100;
-                const elementPosition = element.getBoundingClientRect().top;
-                const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
-                window.scrollTo({
-                    top: offsetPosition,
-                    behavior: 'smooth'
-                });
-            }
-        } else {
-            router.push(page);
-            setTimeout(() => {
-                const element = document.getElementById(sectionId);
-                if (element) {
-                    const headerOffset = 100;
-                    const elementPosition = element.getBoundingClientRect().top;
-                    const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
-                    window.scrollTo({
-                        top: offsetPosition,
-                        behavior: 'smooth'
-                    });
-                }
-            }, 500);
-        }
-    };
-
-    // Updated Footer Links
+    // ============ FOOTER LINKS (Matching Header) ============
     const footerLinks = {
         verticals: [
             { name: "All Verticals", href: "/verticals" },
-            { name: "BizAI Hacks", href: "/verticals/bizaihacks" },
-            { name: "SOLTECH Nexus", href: "/verticals/soltechnexus" },
-            { name: "SOLTECH 360 Ads", href: "/verticals/soltech360ads" },
+            ...soltechVerticals.map((v) => ({ name: v.name, href: `/verticals/${v.slug}` })),
         ],
         technologies: [
             { name: "All Technologies", href: "/technologies" },
-            { name: "Cloud Computing", href: "/technologies/cloud-computing" },
-            { name: "Artificial Intelligence", href: "/technologies/artificial-intelligence" },
-            { name: "Web Development", href: "/technologies/web-development" },
-            { name: "Cyber Security", href: "/technologies/cyber-security" },
-            { name: "IoT & Embedded", href: "/technologies/iot-embedded" },
+            ...technologiesExpert.map((t) => ({ name: t.title, href: `/technologies/${t.slug}` })),
         ],
         business: [
             { name: "All Industries", href: "/industries" },
-            { name: "Retail Industry", href: "/industries/retail" },
-            { name: "Automobile Industry", href: "/industries/automobile" },
-            { name: "Healthcare & Wellness", href: "/industries/healthcare" },
-            { name: "Mining & Quarrying", href: "/industries/mining" },
-            { name: "Agriculture & Allied", href: "/industries/agriculture" },
+            ...businessIndustries.map((b) => ({ name: b.title, href: `/industries/${b.slug}` })),
         ],
         company: [
             { name: "About Us", href: "/about-us" },
             { name: "Contact", href: "/contact" },
-            { name: "Blog", href: "/blog" },
-            { name: "Careers", href: "/careers" },
-            { name: "Partners", href: "/partners" },
         ],
     };
 
@@ -101,12 +84,6 @@ export function Footer() {
         { icon: Twitter, href: "https://twitter.com/soltechtech", name: "Twitter" },
         { icon: Instagram, href: "https://www.instagram.com/soltechtechservices/", name: "Instagram" },
         { icon: Youtube, href: "https://www.youtube.com/@Soltechtechservices", name: "YouTube" },
-    ];
-
-    const externalVerticals = [
-        { name: "BizAI Hacks", url: "https://bizaihacks.com" },
-        { name: "SOLTECH Nexus", url: "https://soltechnexus.com" },
-        { name: "SOLTECH 360 Ads", url: "https://soltech360ads.com" },
     ];
 
     return (
@@ -209,7 +186,7 @@ export function Footer() {
                         {/* Business / Industries */}
                         <div className="w-full">
                             <h3 className="text-blue-800 font-bold text-lg md:text-xl leading-[30px] tracking-[0.5px] mb-4 md:mb-6 font-apfel2">
-                                Business
+                                Industries
                             </h3>
                             <ul className="space-y-2 md:space-y-3">
                                 {footerLinks.business.map((link) => (
@@ -244,21 +221,21 @@ export function Footer() {
                             </ul>
                         </div>
 
-                        {/* External Links */}
+                        {/* External Websites */}
                         <div className="w-full">
                             <h3 className="text-blue-800 font-bold text-lg md:text-xl leading-[30px] tracking-[0.5px] mb-4 md:mb-6 font-apfel2">
                                 Our Websites
                             </h3>
                             <ul className="space-y-2 md:space-y-3">
-                                {externalVerticals.map((link) => (
-                                    <li key={link.name}>
+                                {soltechVerticals.map((vertical) => (
+                                    <li key={vertical.name}>
                                         <a
-                                            href={link.url}
+                                            href={vertical.url}
                                             target="_blank"
                                             rel="noopener noreferrer"
                                             className="text-gray-600 hover:text-blue-800 transition-colors text-sm md:text-base leading-6 tracking-[0.0208px] font-neuhas font-normal flex items-center gap-1.5"
                                         >
-                                            {link.name}
+                                            {vertical.name}
                                             <ExternalLink className="w-3 h-3" />
                                         </a>
                                     </li>
@@ -386,18 +363,22 @@ export function Footer() {
                 {/* COPYRIGHT BAR */}
                 <div className="border-t border-gray-200 w-full">
                     <div className="py-5 flex flex-col md:flex-row items-center justify-between gap-3">
-                        <p className="text-sm text-gray-500 font-neuhas order-2 md:order-1 text-right md:text-right">
+                        <p className="text-sm text-gray-500 font-neuhas order-2 md:order-1 text-center md:text-left">
                             © 2025 SOLTECH TechServices Pvt Ltd. All Rights Reserved.
                         </p>
-                        {/* <div className="flex items-center gap-4 order-1 md:order-2">
+                        <div className="flex items-center gap-4 order-1 md:order-2">
                             <Link href="/privacy" className="text-sm text-gray-500 hover:text-blue-800 font-neuhas transition-colors">
-                                Privacy Policy
+                                Privacy
                             </Link>
                             <span className="text-gray-300">|</span>
                             <Link href="/terms-of-use" className="text-sm text-gray-500 hover:text-blue-800 font-neuhas transition-colors">
-                                Terms of Service
+                                Terms
                             </Link>
-                        </div> */}
+                            <span className="text-gray-300">|</span>
+                            <Link href="/contact" className="text-sm text-gray-500 hover:text-blue-800 font-neuhas transition-colors">
+                                Contact
+                            </Link>
+                        </div>
                     </div>
                 </div>
             </div>

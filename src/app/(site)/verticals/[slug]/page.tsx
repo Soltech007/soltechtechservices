@@ -17,7 +17,7 @@ const verticalDetailsData: Record<string, any> = {
         slug: "bizaihacks",
         url: "https://bizaihacks.com",
         tagline: "Transform Business with AI",
-        color: "#6366f1", // Indigo
+        color: "#6366f1",
         description: "AI-powered business automation and intelligence solutions that help enterprises make smarter decisions and automate complex workflows.",
         longDescription: "BizAI Hacks is SOLTECH's dedicated AI vertical, specializing in helping businesses harness the transformative power of artificial intelligence. We combine cutting-edge AI technologies with deep business understanding to deliver solutions that drive real, measurable impact. From intelligent process automation and predictive analytics to conversational AI and computer vision, we help organizations unlock new possibilities and gain competitive advantages through AI innovation.",
         heroImage: "https://images.unsplash.com/photo-1677442136019-21780ecad995?q=80&w=2000&auto=format&fit=crop",
@@ -115,7 +115,7 @@ const verticalDetailsData: Record<string, any> = {
         slug: "soltechnexus",
         url: "https://soltechnexus.com",
         tagline: "Connect. Transform. Grow.",
-        color: "#0891b2", // Cyan
+        color: "#0891b2",
         description: "Enterprise software development and digital transformation solutions that connect businesses with cutting-edge technology.",
         longDescription: "SOLTECH Nexus is our enterprise software development and digital transformation vertical. We help businesses modernize their technology landscape, build custom software solutions, and embrace digital-first strategies that accelerate growth. Our team of experienced architects, developers, and consultants work closely with clients to understand their unique challenges and deliver solutions that drive measurable business outcomes. From legacy modernization and cloud migration to custom application development and system integration, we are your trusted technology partner.",
         heroImage: "https://images.unsplash.com/photo-1551434678-e076c223a692?q=80&w=2000&auto=format&fit=crop",
@@ -213,7 +213,7 @@ const verticalDetailsData: Record<string, any> = {
         slug: "soltech360ads",
         url: "https://soltech360ads.com",
         tagline: "360° Digital Marketing",
-        color: "#dc2626", // Red
+        color: "#dc2626",
         description: "Complete digital marketing and advertising solutions that drive brand awareness, engagement, and conversions across all channels.",
         longDescription: "SOLTECH 360 Ads is our comprehensive digital marketing vertical, offering end-to-end marketing solutions that help brands reach, engage, and convert their target audiences. We combine creative excellence with data-driven strategies to deliver campaigns that maximize ROI. From search engine optimization and content marketing to paid advertising, social media management, and marketing automation, we create integrated marketing programs that build brand equity and drive measurable business results.",
         heroImage: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=2000&auto=format&fit=crop",
@@ -307,14 +307,16 @@ const verticalDetailsData: Record<string, any> = {
     }
 };
 
+// ✅ FIX: Interface with Promise type for params (Next.js 15+)
 interface VerticalDetailPageProps {
-    params: {
+    params: Promise<{
         slug: string;
-    };
+    }>;
 }
 
+// ✅ FIX: Await params in the main component
 export default async function VerticalDetailPage({ params }: VerticalDetailPageProps) {
-    const { slug } = params;
+    const { slug } = await params; // ✅ FIXED: Added await
     const verticalData = verticalDetailsData[slug];
 
     if (!verticalData) {
@@ -324,6 +326,7 @@ export default async function VerticalDetailPage({ params }: VerticalDetailPageP
     return <VerticalDetailClient vertical={verticalData} />;
 }
 
+// ✅ Metadata function (already correct)
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
     const { slug } = await params;
     const vertical = verticalDetailsData[slug];
@@ -349,7 +352,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     };
 }
 
-// Generate static params for all verticals
+// ✅ Generate static params for all verticals
 export async function generateStaticParams() {
     return soltechVerticals.map((vertical) => ({
         slug: vertical.slug,

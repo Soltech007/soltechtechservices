@@ -312,14 +312,16 @@ const technologyDetailsData: Record<string, any> = {
     },
 };
 
+// ✅ FIX: Interface with Promise type for params (Next.js 15+)
 interface TechnologyDetailPageProps {
-    params: {
+    params: Promise<{
         slug: string;
-    };
+    }>;
 }
 
+// ✅ FIX: Await params in the main component
 export default async function TechnologyDetailPage({ params }: TechnologyDetailPageProps) {
-    const { slug } = params;
+    const { slug } = await params; // ✅ FIXED: Added await
     const technologyData = technologyDetailsData[slug];
 
     if (!technologyData) {
@@ -329,6 +331,7 @@ export default async function TechnologyDetailPage({ params }: TechnologyDetailP
     return <TechnologyDetailClient technology={technologyData} />;
 }
 
+// ✅ Metadata function (already correct)
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
     const { slug } = await params;
     const technology = technologyDetailsData[slug];
@@ -351,6 +354,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     };
 }
 
+// ✅ Generate static params for all technologies
 export async function generateStaticParams() {
     return soltechTechnologies.map((tech) => ({
         slug: tech.slug,
