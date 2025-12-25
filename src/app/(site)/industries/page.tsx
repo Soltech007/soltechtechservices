@@ -77,6 +77,13 @@ interface IndustryDetailClientProps {
 }
 
 export default function IndustryDetailClient({ industry }: IndustryDetailClientProps) {
+     if (!industry) {
+        return (
+            <div className="py-32 text-center text-gray-600">
+                Industry data not available
+            </div>
+        );
+    }
     return (
         <>
             {/* ✅ HERO SECTION */}
