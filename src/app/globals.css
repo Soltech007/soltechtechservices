@@ -1,0 +1,521 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Mobile me extra space hatane ke liye */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  /* border: 1px solid red; */
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 2rem;
+  /* overflow: hidden; */
+
+}
+
+.page-enter {
+  opacity: 0;
+  transform: translateY(10px);
+}
+
+.page-enter-active {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 300ms ease-out, transform 300ms ease-out;
+}
+
+/* Optional: Add blur effect during transition */
+.transitioning {
+  filter: blur(2px);
+  pointer-events: none;
+}
+
+/* Smooth color transitions for links */
+a {
+  transition: color 0.2s ease;
+}
+
+/* Fade in animation for images */
+img {
+  animation: fadeIn 0.5s ease-in;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0.7;
+    /* Start from 70% opacity (barely noticeable) */
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-40px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.animate-slideInLeft {
+  animation: slideInLeft 0.8s cubic-bezier(0.25, 0.1, 0.25, 1) both;
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.15s ease-out;
+  /* Super fast 150ms */
+}
+
+/* Fix for dropdown menu scrollbar issue */
+[data-radix-popper-content-wrapper] {
+  position: fixed !important;
+}
+
+/* Alternative if using shadcn dropdown */
+[role="menu"] {
+  position: fixed !important;
+  z-index: 50 !important;
+}
+
+/* Prevent layout shift */
+body {
+  overflow-y: scroll !important;
+}
+
+header {
+  max-width: 100vw !important;
+  overflow-x: hidden !important;
+}
+
+/* Mobile specific fixes - OVERFLOW HIDDEN HATAYA */
+@media (max-width: 768px) {
+  body {
+    width: 100%;
+  }
+
+  /* Container width fix - OVERFLOW HIDDEN SIRF SPECIFIC JAGAH */
+  .container,
+  section {
+    max-width: 100%;
+  }
+}
+
+/* CAROUSEL FIX - YE IMPORTANT HAI */
+@layer components {
+
+  /* Carousel container fix */
+  [data-orientation="horizontal"] {
+    overflow: visible !important;
+  }
+
+  /* Carousel items visibility fix */
+  .carousel-item-visible {
+    opacity: 1 !important;
+    visibility: visible !important;
+  }
+
+  /* Mobile carousel specific */
+  @media (max-width: 640px) {
+    [role="region"][aria-roledescription="carousel"] {
+      overflow: visible !important;
+    }
+
+    [data-orientation="horizontal"] .flex {
+      gap: 0 !important;
+    }
+  }
+}
+
+/* Carousel specific fixes */
+@media (max-width: 640px) {
+  .embla__container {
+    display: flex !important;
+  }
+
+  .embla__slide {
+    flex: 0 0 100% !important;
+    min-width: 0 !important;
+  }
+}
+
+@layer base {
+  @font-face {
+    font-family: 'Apfel Grotezk';
+    src: url('./fonts/ApfelGrotezk-Mittel.937ca0c8.woff2') format('woff2');
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+  }
+
+  @font-face {
+    font-family: 'Apfel Grotezk2';
+    src: url('./fonts/ApfelGrotezk-Regular.98879785.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+  }
+
+  @font-face {
+    font-family: 'Apfel Grotezk3';
+    src: url('./fonts/NectoMono-Regular.6c89f0b8.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+  }
+
+  /* update mein kya problem ho  */
+  @font-face {
+    font-family: 'NeuHaas Thin';
+    src: url('./fonts/NeueHaasDisplayLight.ttf') format('truetype');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+  }
+
+  @font-face {
+    font-family: 'NeuHaas Extra Thin';
+    src: url('./fonts/NeueHaasDisplayThin.ttf') format('truetype');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+  }
+
+  @font-face {
+    font-family: 'Necto Mono';
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: url(./fonts/NectoMono-Regular.6c89f0b8.woff2) format('woff2');
+  }
+
+  .bechtel-mono-lg {
+    font-family: "Necto Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    font-weight: 400;
+    text-transform: uppercase;
+    line-height: 1.5;
+    font-size: 1rem;
+  }
+
+  .bechtel-mono-md {
+    font-family: "Necto Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    font-weight: 400;
+    text-transform: uppercase;
+    line-height: 1.5;
+    font-size: 0.875rem;
+  }
+
+  @font-face {
+    font-family: 'Apfel Grotezk';
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: url(./fonts/ApfelGrotezk-Mittel.937ca0c8.woff2) format('woff2');
+  }
+
+  @font-face {
+    font-family: 'Apfel Grotezk';
+    font-style: normal;
+    font-weight: 600;
+    font-display: swap;
+    src: url(./fonts/ApfelGrotezk-Regular.98879785.woff2) format('woff2');
+  }
+
+  @font-face {
+    font-family: 'Apfel Grotezk';
+    font-style: normal;
+    font-weight: 800;
+    font-display: swap;
+    src: url(./fonts/NeueHaasDisplayThin.ttf) format('woff2');
+  }
+
+
+  :root {
+    --background: 220 13% 96%;
+    /* #F0F2F5 */
+    --foreground: 215 28% 17%;
+    --card: 0 0% 100%;
+    --card-foreground: 215 28% 17%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 215 28% 17%;
+    --primary: 212 47% 18%;
+    /* #182C40 */
+    --primary-foreground: 0 0% 98%;
+    --secondary: 210 40% 96.1%;
+    --secondary-foreground: 222 47% 11%;
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+    --accent: 0 100% 50%;
+    /* #E67E22 */
+    --accent-foreground: 0 0% 98%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 212 47% 28%;
+    --chart-1: 12 76% 61%;
+    --chart-2: 173 58% 39%;
+    --chart-3: 197 37% 24%;
+    --chart-4: 43 74% 66%;
+    --chart-5: 27 87% 67%;
+    --radius: 0.5rem;
+    --header-height: 84px;
+    --footer-height: 400px;
+  }
+
+  .dark {
+    --background: 212 47% 10%;
+    --foreground: 0 0% 98%;
+    --card: 212 47% 12%;
+    --card-foreground: 0 0% 98%;
+    --popover: 212 47% 10%;
+    --popover-foreground: 0 0% 98%;
+    --primary: 212 47% 18%;
+    --primary-foreground: 0 0% 98%;
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 0 0% 98%;
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+    --accent: 28 80% 52%;
+    --accent-foreground: 0 0% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 28 80% 52%;
+    --chart-1: 220 70% 50%;
+    --chart-2: 160 60% 45%;
+    --chart-3: 30 80% 55%;
+    --chart-4: 280 65% 60%;
+    --chart-5: 340 75% 55%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+@keyframes slide-in {
+  from {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.animate-slide-in {
+  animation: slide-in 0.6s ease-out;
+}
+
+/* Custom Scrollbar */
+.scrollbar-thin::-webkit-scrollbar {
+  height: 8px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-track {
+  background: #e5e7eb;
+  border-radius: 10px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb {
+  background: #1D4ED8;
+  border-radius: 10px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb:hover {
+  background: #1E3A8A;
+}
+
+@keyframes slide-in {
+  from {
+    transform: translateX(400px);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.animate-slide-in {
+  animation: slide-in 0.5s ease-out;
+}
+
+/* Background grid pattern */
+.bg-grid-white {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32' width='32' height='32' fill='none' stroke='rgb(255 255 255 / 0.02)'%3e%3cpath d='M0 .5H31.5V32'/%3e%3c/svg%3e");
+}
+
+/* Add these at the end of your globals.css file */
+
+/* TinyMCE Dropdown Fixes */
+.tox-tinymce-aux {
+  z-index: 999999 !important;
+}
+
+.tox .tox-menu {
+  z-index: 999999 !important;
+}
+
+.tox .tox-collection {
+  z-index: 999999 !important;
+}
+
+.tox-collection--list {
+  z-index: 999999 !important;
+}
+
+/* Fix for parent containers */
+body>div[role="application"] {
+  z-index: 999999 !important;
+}
+
+/* Ensure no parent has transform */
+.tox-tinymce,
+.tox-tinymce * {
+  transform: none !important;
+}
+
+/* Fix overflow issues */
+.tox-editor-header {
+  overflow: visible !important;
+}
+
+/* Mobile-friendly blog content wrapper */
+.blog-content-wrapper {
+  width: 100%;
+  overflow-x: hidden;
+}
+
+.blog-content-wrapper * {
+  max-width: 100% !important;
+  overflow-x: auto;
+}
+
+/* Tables ko scrollable banao */
+.blog-content-wrapper table {
+  display: block;
+  width: 100% !important;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  border-collapse: collapse;
+}
+
+.blog-content-wrapper table td,
+.blog-content-wrapper table th {
+  white-space: nowrap;
+  min-width: 120px;
+}
+
+/* Images responsive */
+.blog-content-wrapper img {
+  max-width: 100% !important;
+  height: auto !important;
+  width: auto !important;
+}
+
+/* Divs with fixed width */
+.blog-content-wrapper div[style*="width"],
+.blog-content-wrapper div[style*="max-width"] {
+  max-width: 100% !important;
+  width: 100% !important;
+}
+
+/* Table containers */
+.blog-content-wrapper [style*="display: table"] {
+  display: block !important;
+  overflow-x: auto;
+}
+
+.blog-content-wrapper [style*="display: table-row"] {
+  display: block !important;
+  margin-bottom: 1rem;
+}
+
+.blog-content-wrapper [style*="display: table-cell"] {
+  display: block !important;
+  width: 100% !important;
+  margin-bottom: 0.5rem;
+}
+
+/* Mobile specific */
+@media (max-width: 768px) {
+  .blog-content-wrapper {
+    font-size: 16px;
+    padding: 0 !important;
+  }
+
+  .blog-content-wrapper table {
+    font-size: 14px;
+  }
+
+  .blog-content-wrapper h1 {
+    font-size: clamp(1.5rem, 5vw, 3rem) !important;
+  }
+
+  .blog-content-wrapper h2 {
+    font-size: clamp(1.3rem, 4vw, 2rem) !important;
+  }
+
+  .blog-content-wrapper p {
+    font-size: clamp(0.9rem, 3vw, 1.1rem) !important;
+  }
+}
+
+/* Mobile-friendly blog content fixes */
+.blog-content-wrapper {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+.blog-content-wrapper * {
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+.blog-content-wrapper table {
+  display: table;
+  border-collapse: collapse;
+}
+
+.blog-content-wrapper img {
+  max-width: 100% !important;
+  height: auto !important;
+  width: auto !important;
+}
+
+/* Desktop view - Two column layout for specific divs */
+@media (min-width: 768px) {
+
+  /* Desktop me do columns side-by-side */
+  .blog-content-wrapper>div>section>div>div[style*="display: block"] {
+    display: flex !important;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+
+  .blog-content-wrapper>div>section>div>div[style*="display: block"]>div {
+    flex: 1;
+    min-width: calc(50% - 10px);
+    margin-bottom: 0 !important;
+  }
+}

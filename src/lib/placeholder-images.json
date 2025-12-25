@@ -1,0 +1,136 @@
+{
+  "placeholderImages": [
+    {
+      "id": "hero-background",
+      "description": "A massive road construction project on a green hillside with large machinery.",
+      "imageUrl": "https://picsum.photos/seed/bechtel-hero/1920/1080",
+      "imageHint": "highway construction hill"
+    },
+    {
+      "id": "project-1",
+      "description": "Multi-lane expressway with cars, representing the Delhi-Mumbai Expressway.",
+      "imageUrl": "https://picsum.photos/seed/proj1/600/400",
+      "imageHint": "expressway traffic"
+    },
+    {
+      "id": "project-2",
+      "description": "A scenic highway cutting through green landscapes, for Bangalore-Chennai Expressway.",
+      "imageUrl": "https://picsum.photos/seed/proj2/600/400",
+      "imageHint": "highway landscape"
+    },
+    {
+      "id": "project-3",
+      "description": "A long sea-link bridge over the ocean, representing Mumbai Trans Harbour Link.",
+      "imageUrl": "https://picsum.photos/seed/proj3/600/400",
+      "imageHint": "sea bridge"
+    },
+    {
+      "id": "about-us",
+      "description": "A team of Indian engineers in hard hats and safety vests at a construction site.",
+      "imageUrl": "https://picsum.photos/seed/about/800/600",
+      "imageHint": "engineers construction"
+    },
+    {
+      "id": "we-are-veritas",
+      "description": "Behind the scenes of a corporate video shoot with cameras and lighting.",
+      "imageUrl": "https://picsum.photos/seed/we-are-veritas/1600/900",
+      "imageHint": "video production"
+    },
+    {
+      "id": "team-member-1",
+      "description": "Portrait of a senior Indian male executive in a suit.",
+      "imageUrl": "https://picsum.photos/seed/team1/400/400",
+      "imageHint": "indian businessman"
+    },
+    {
+      "id": "team-member-2",
+      "description": "Portrait of a professional Indian female in business attire.",
+      "imageUrl": "https://picsum.photos/seed/team2/400/400",
+      "imageHint": "indian businesswoman"
+    },
+    {
+      "id": "team-member-3",
+      "description": "Portrait of an experienced Indian male engineer.",
+      "imageUrl": "https://picsum.photos/seed/team3/400/400",
+      "imageHint": "indian engineer"
+    },
+    {
+      "id": "featured-1",
+      "description": "Aerial view of a nuclear power plant.",
+      "imageUrl": "https://picsum.photos/seed/nuclear-plant/600/400",
+      "imageHint": "nuclear power"
+    },
+    {
+      "id": "award-image",
+      "description": "A person receiving a safety award on stage.",
+      "imageUrl": "https://picsum.photos/seed/safety-award/600/400",
+      "imageHint": "award ceremony"
+    },
+    {
+      "id": "welder-pipeline",
+      "description": "A welder working on a large industrial pipeline.",
+      "imageUrl": "https://picsum.photos/seed/welder/800/600",
+      "imageHint": "welder pipeline"
+    },
+    {
+      "id": "quality-people-bg",
+      "description": "A dark, atmospheric shot of people working on a project, with bokeh lights.",
+      "imageUrl": "https://picsum.photos/seed/quality-people/1600/800",
+      "imageHint": "people working"
+    },
+    {
+      "id": "careers-hero",
+      "description": "Aerial view of a large-scale construction site with cranes and workers.",
+      "imageUrl": "https://picsum.photos/seed/careers-hero/1920/1080",
+      "imageHint": "construction site aerial"
+    },
+    {
+      "id": "legacy-bhakra-dam",
+      "description": "A massive concrete gravity dam.",
+      "imageUrl": "https://picsum.photos/seed/bhakra-dam/800/1000",
+      "imageHint": "concrete dam"
+    },
+    {
+      "id": "legacy-idukki-dam",
+      "description": "A parabolic thin arch dam in a gorge.",
+      "imageUrl": "https://picsum.photos/seed/idukki-dam/800/1000",
+      "imageHint": "arch dam"
+    },
+    {
+      "id": "legacy-kolkata-metro",
+      "description": "An underground metro train at a station.",
+      "imageUrl": "https://picsum.photos/seed/kolkata-metro/800/1000",
+      "imageHint": "metro station"
+    },
+    {
+      "id": "legacy-konkan-railway",
+      "description": "A train on a bridge in a lush green valley.",
+      "imageUrl": "https://picsum.photos/seed/konkan-railway/800/1000",
+      "imageHint": "train valley"
+    },
+    {
+      "id": "legacy-golden-quad",
+      "description": "A multi-lane expressway stretching into the distance.",
+      "imageUrl": "https://picsum.photos/seed/golden-quad/800/1000",
+      "imageHint": "expressway highway"
+    },
+    {
+      "id": "legacy-delhi-metro",
+      "description": "A modern metro train on an elevated track in a city.",
+      "imageUrl": "https://picsum.photos/seed/delhi-metro/800/1000",
+      "imageHint": "city metro"
+    },
+    {
+      "id": "legacy-chenab-bridge",
+      "description": "A massive steel arch bridge high above a river.",
+      "imageUrl": "https://picsum.photos/seed/chenab-bridge/800/1000",
+      "imageHint": "arch bridge"
+    },
+    {
+      "id": "legacy-atal-tunnel",
+      "description": "The well-lit entrance to a modern highway tunnel in the mountains.",
+      "imageUrl": "https://picsum.photos/seed/atal-tunnel/800/1000",
+      "imageHint": "highway tunnel"
+    }
+  ]
+}
