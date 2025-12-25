@@ -6,7 +6,6 @@ import Link from "next/link";
 import { Menu, X, ChevronDown, ExternalLink } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
-import { CtaButton } from "@/components/sections/SlaveryStatementPageWrapper";
 import { useRouter, usePathname } from "next/navigation";
 
 // ============ SOLTECH VERTICALS (With Images & Slug) ============
@@ -623,13 +622,13 @@ function VerticalsContent({ onLinkClick }: { onLinkClick: () => void }) {
           subsidiary companies and their specialized offerings.
         </p>
 
-        <CtaButton
-          href="/verticals"
+        <Button
+          ref="/verticals"
           onClick={onLinkClick}
           className="mt-6 inline-flex items-center gap-4 group"
         >
           View All Verticals
-        </CtaButton>
+        </Button>
 
         <div className="mt-10 pt-6 border-t">
           <div className="text-[12px] font-semibold tracking-wider text-gray-600 uppercase font-apfel2">
@@ -713,13 +712,13 @@ function TechnologiesContent({ onLinkClick }: { onLinkClick: () => void }) {
           innovative solutions for our clients across all industries.
         </p>
 
-        <CtaButton
-          href="/technologies"
+        <Button
+          ref="/technologies"
           onClick={onLinkClick}
           className="mt-6 inline-flex items-center gap-4 group"
         >
           Explore All Technologies
-        </CtaButton>
+        </Button>
 
         <div className="mt-10 pt-6 border-t">
           <div className="text-[12px] font-semibold tracking-wider text-gray-600 uppercase font-apfel2">
@@ -787,13 +786,13 @@ function BusinessContent({ onLinkClick }: { onLinkClick: () => void }) {
           excellence.
         </p>
 
-        <CtaButton
-          href="/industries"
+        <Button
+          ref="/industries"
           onClick={onLinkClick}
           className="mt-6 inline-flex items-center gap-4 group"
         >
           View All Industries
-        </CtaButton>
+        </Button>
 
         <div className="mt-10 pt-6 border-t">
           <div className="text-[12px] font-semibold tracking-wider text-gray-600 uppercase font-apfel2">
