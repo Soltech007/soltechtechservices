@@ -606,7 +606,6 @@ function MegaPanel({
     </div>
   );
 }
-
 /* ---------------- VERTICALS Content (With Images & Internal Links) ---------------- */
 function VerticalsContent({ onLinkClick }: { onLinkClick: () => void }) {
   return (
@@ -622,13 +621,12 @@ function VerticalsContent({ onLinkClick }: { onLinkClick: () => void }) {
           subsidiary companies and their specialized offerings.
         </p>
 
-        <Button
-          ref="/verticals"
-          onClick={onLinkClick}
-          className="mt-6 inline-flex items-center gap-4 group"
-        >
-          View All Verticals
-        </Button>
+        {/* ✅ FIXED: Use Link with Button as child, or use asChild prop */}
+        <Link href="/verticals" onClick={onLinkClick}>
+          <Button className="mt-6 inline-flex items-center gap-4 group">
+            View All Verticals
+          </Button>
+        </Link>
 
         <div className="mt-10 pt-6 border-t">
           <div className="text-[12px] font-semibold tracking-wider text-gray-600 uppercase font-apfel2">
@@ -666,26 +664,11 @@ function VerticalsContent({ onLinkClick }: { onLinkClick: () => void }) {
                   fill
                   className="object-cover group-hover:scale-105 transition-transform duration-300"
                 />
-                {/* Tagline Badge */}
-                {/* <div className="absolute bottom-2 left-2 bg-indigo-600/90 backdrop-blur-sm rounded-full px-3 py-1">
-                  <span className="text-[10px] text-white font-medium">{vertical.tagline}</span>
-                </div> */}
               </div>
               <div className="mt-3 flex items-center justify-between">
                 <span className="font-semibold text-gray-900 group-hover:text-blue-800 font-apfel2">
                   {vertical.name}
                 </span>
-                {/* External Link */}
-                {/* <a
-                  href={vertical.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  onClick={(e) => e.stopPropagation()}
-                  className="p-1.5 bg-gray-100 rounded-full hover:bg-blue-100 transition-colors"
-                  title={`Visit ${vertical.name}`}
-                >
-                  <ExternalLink className="w-3.5 h-3.5 text-gray-600 hover:text-blue-800" />
-                </a> */}
               </div>
               <p className="text-sm text-gray-600 mt-1 font-neuhas line-clamp-2">
                 {vertical.description}
@@ -712,13 +695,12 @@ function TechnologiesContent({ onLinkClick }: { onLinkClick: () => void }) {
           innovative solutions for our clients across all industries.
         </p>
 
-        <Button
-          ref="/technologies"
-          onClick={onLinkClick}
-          className="mt-6 inline-flex items-center gap-4 group"
-        >
-          Explore All Technologies
-        </Button>
+        {/* ✅ FIXED */}
+        <Link href="/technologies" onClick={onLinkClick}>
+          <Button className="mt-6 inline-flex items-center gap-4 group">
+            Explore All Technologies
+          </Button>
+        </Link>
 
         <div className="mt-10 pt-6 border-t">
           <div className="text-[12px] font-semibold tracking-wider text-gray-600 uppercase font-apfel2">
@@ -786,13 +768,12 @@ function BusinessContent({ onLinkClick }: { onLinkClick: () => void }) {
           excellence.
         </p>
 
-        <Button
-          ref="/industries"
-          onClick={onLinkClick}
-          className="mt-6 inline-flex items-center gap-4 group"
-        >
-          View All Industries
-        </Button>
+        {/* ✅ FIXED */}
+        <Link href="/industries" onClick={onLinkClick}>
+          <Button className="mt-6 inline-flex items-center gap-4 group">
+            View All Industries
+          </Button>
+        </Link>
 
         <div className="mt-10 pt-6 border-t">
           <div className="text-[12px] font-semibold tracking-wider text-gray-600 uppercase font-apfel2">
