@@ -143,15 +143,15 @@ export function Footer() {
                 
                 {/* TOP SECTION - Links Grid */}
                 <div className="py-12 md:py-16 border-b border-gray-200">
-                    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-8 md:gap-10 lg:gap-12">
-                        
-                        {/* Verticals */}
+                    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-4 gap-8 md:gap-10 lg:gap-12">                  
+
+                        {/* Technologies */}
                         <div className="w-full">
                             <h3 className="text-blue-800 font-bold text-lg md:text-xl leading-[30px] tracking-[0.5px] mb-4 md:mb-6 font-apfel2">
-                                Verticals
+                                Technologies
                             </h3>
                             <ul className="space-y-2 md:space-y-3">
-                                {footerLinks.verticals.map((link) => (
+                                {footerLinks.technologies.map((link) => (
                                     <li key={link.name}>
                                         <Link
                                             href={link.href}
@@ -164,13 +164,13 @@ export function Footer() {
                             </ul>
                         </div>
 
-                        {/* Technologies */}
+       {/* Verticals */}
                         <div className="w-full">
                             <h3 className="text-blue-800 font-bold text-lg md:text-xl leading-[30px] tracking-[0.5px] mb-4 md:mb-6 font-apfel2">
-                                Technologies
+                                Verticals
                             </h3>
                             <ul className="space-y-2 md:space-y-3">
-                                {footerLinks.technologies.map((link) => (
+                                {footerLinks.verticals.map((link) => (
                                     <li key={link.name}>
                                         <Link
                                             href={link.href}
@@ -202,24 +202,7 @@ export function Footer() {
                             </ul>
                         </div>
 
-                        {/* Company */}
-                        <div className="w-full">
-                            <h3 className="text-blue-800 font-bold text-lg md:text-xl leading-[30px] tracking-[0.5px] mb-4 md:mb-6 font-apfel2">
-                                Company
-                            </h3>
-                            <ul className="space-y-2 md:space-y-3">
-                                {footerLinks.company.map((link) => (
-                                    <li key={link.name}>
-                                        <Link
-                                            href={link.href}
-                                            className="text-gray-600 hover:text-blue-800 transition-colors text-sm md:text-base leading-6 tracking-[0.0208px] font-neuhas font-normal block"
-                                        >
-                                            {link.name}
-                                        </Link>
-                                    </li>
-                                ))}
-                            </ul>
-                        </div>
+                     
 
                         {/* External Websites */}
                         <div className="w-full">
@@ -349,12 +332,7 @@ export function Footer() {
                                 ))}
                             </ul>
                             
-                            {/* Company Registration */}
-                            <div className="pt-4 border-t border-gray-100">
-                                <p className="text-xs text-gray-500 font-neuhas">
-                                    A division of SOLTECH TechServices Pvt Ltd
-                                </p>
-                            </div>
+                            
                         </div>
 
                     </div>

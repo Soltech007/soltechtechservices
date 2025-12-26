@@ -134,7 +134,7 @@ export default function ContactPage() {
                                     </div>
 
                                     {/* Business Hours */}
-                                    <div className="flex items-start group">
+                                    {/* <div className="flex items-start group">
                                         <Clock className="h-5 w-5 text-blue-800 mt-1 group-hover:scale-110 transition-transform flex-shrink-0" />
                                         <div className="ml-4">
                                             <p className="font-semibold text-gray-900 mb-1 font-neuhas">Working Hours</p>
@@ -144,7 +144,7 @@ export default function ContactPage() {
                                                 <span className="text-xs text-gray-500">24/7 Support for Enterprise Clients</span>
                                             </p>
                                         </div>
-                                    </div>
+                                    </div> */}
                                 </div>
 
                                 {/* Quick Stats */}
