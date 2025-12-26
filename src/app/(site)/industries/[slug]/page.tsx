@@ -1,7 +1,7 @@
 // app/industries/[slug]/page.tsx
 import { Metadata } from 'next';
 import { notFound } from "next/navigation";
-import IndustryDetailClient from "@/components/sections/IndustryDetails"; // ✅ FIXED IMPORT
+import IndustryDetailClient from "@/components/sections/IndustryDetails";
 
 // SOLTECH Industries Data for static params
 const soltechIndustries = [
@@ -338,14 +338,16 @@ const industryDetailsData: Record<string, any> = {
     }
 };
 
+// ✅ FIX: Interface with Promise type for params (Next.js 15+)
 interface IndustryDetailPageProps {
-    params: {
+    params: Promise<{
         slug: string;
-    };
+    }>;
 }
 
+// ✅ FIX: Await params in the main component
 export default async function IndustryDetailPage({ params }: IndustryDetailPageProps) {
-    const { slug } = params;
+    const { slug } = await params; // ✅ FIXED: Added await
     const industryData = industryDetailsData[slug];
 
     if (!industryData) {
@@ -355,6 +357,7 @@ export default async function IndustryDetailPage({ params }: IndustryDetailPageP
     return <IndustryDetailClient industry={industryData} />;
 }
 
+// ✅ Metadata function (already correct)
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
     const { slug } = await params;
     const industry = industryDetailsData[slug];
@@ -377,6 +380,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     };
 }
 
+// ✅ Generate static params for all industries
 export async function generateStaticParams() {
     return soltechIndustries.map((industry) => ({
         slug: industry.slug,
