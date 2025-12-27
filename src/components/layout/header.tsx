@@ -9,13 +9,13 @@ import Image from "next/image";
 import { useRouter, usePathname } from "next/navigation";
 
 // ============ SOLTECH VERTICALS (With Images & Slug) ============
+// ============ SOLTECH VERTICALS (With Images & Slug) ============
 const soltechVerticals = [
   {
     id: 1,
     name: "BizAI Hacks",
     slug: "bizaihacks",
     url: "https://bizaihacks.com",
-    // tagline: "Transform Business with AI",
     description: "AI-powered business automation and intelligence solutions",
     image: "https://images.unsplash.com/photo-1677442136019-21780ecad995?q=80&w=800&auto=format&fit=crop",
   },
@@ -24,7 +24,6 @@ const soltechVerticals = [
     name: "SOLTECH Nexus",
     slug: "soltechnexus",
     url: "https://soltechnexus.com",
-    // tagline: "Connect. Transform. Grow.",
     description: "Enterprise software development and digital transformation",
     image: "https://images.unsplash.com/photo-1551434678-e076c223a692?q=80&w=800&auto=format&fit=crop",
   },
@@ -33,12 +32,50 @@ const soltechVerticals = [
     name: "SOLTECH 360 Ads",
     slug: "soltech360ads",
     url: "https://soltech360ads.com",
-    // tagline: "360° Digital Marketing",
     description: "360° digital marketing and advertising solutions",
     image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=800&auto=format&fit=crop",
   },
+  {
+    id: 4,
+    name: "MrCCTV",
+    slug: "mrcctv",
+    url: "https://mrcctv.com",
+    description: "Advanced CCTV cameras, NVRs, and smart surveillance solutions",
+    image: "https://images.unsplash.com/photo-1557597774-9d273605dfa9?q=80&w=800&auto=format&fit=crop",
+  },
+  {
+    id: 5,
+    name: "Soltech Virtual CTO",
+    slug: "soltech-virtual-cto",
+    url: "https://soltechvirtualcto.com",
+    description: "Virtual CTO services, IT strategy & cloud consulting",
+    image: "https://images.unsplash.com/photo-1553877522-43269d4ea984?q=80&w=800&auto=format&fit=crop",
+  },
+  {
+    id: 6,
+    name: "Soltech Biz Solutions",
+    slug: "soltech-biz-solutions",
+    url: "https://soltechbizsolutions.com",
+    description: "ERP, CRM, HRMS & business process automation solutions",
+    image: "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?q=80&w=800&auto=format&fit=crop",
+  },
+  {
+    id: 7,
+    name: "Soltech Tronix",
+    slug: "soltech-tronix",
+    url: "https://soltechtronix.com",
+    description: "IoT devices, embedded systems & industrial automation hardware",
+    image: "https://images.unsplash.com/photo-1558346490-a72e53ae2d4f?q=80&w=800&auto=format&fit=crop",
+  },
+  {
+    id: 8,
+    name: "Soltech Talent Hub",
+    slug: "soltech-talent-hub",
+    url: "https://soltechtalenthub.com",
+    description: "IT recruitment, corporate training & talent management",
+    image: "https://images.unsplash.com/photo-1521737711867-e3b97375f902?q=80&w=800&auto=format&fit=crop",
+  },
 ];
-
 // ============ TECHNOLOGIES WE ARE EXPERT IN (With Images) ============
 const technologiesExpert = [
   {
