@@ -223,36 +223,6 @@ export default function VerticalDetailClient({ vertical }: VerticalDetailClientP
                     </nav>
                 </div>
             </div>
-
-            {/* ============ STATISTICS SECTION ============ */}
-            <section className="py-16 sm:py-20 bg-white">
-                <div className="px-4 sm:px-6 md:px-8 lg:px-16 xl:px-20">
-                    <div className="max-w-7xl mx-auto">
-                        <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
-                            {vertical.statistics.map((stat, idx) => (
-                                <div 
-                                    key={idx} 
-                                    className="relative group p-6 sm:p-8 rounded-2xl bg-gradient-to-br from-gray-50 to-white border border-gray-100 hover:border-blue-200 hover:shadow-xl transition-all duration-300"
-                                >
-                                    {/* Accent Line */}
-                                    <div className="absolute top-0 left-6 right-6 h-1 rounded-b-full bg-blue-800 opacity-0 group-hover:opacity-100 transition-opacity" />
-                                    
-                                    <div className="text-4xl sm:text-5xl lg:text-6xl font-bold font-apfel2 text-blue-800 mb-2">
-                                        {stat.value}
-                                    </div>
-                                    <div className="text-lg sm:text-xl font-semibold text-gray-900 font-apfel2 mb-1">
-                                        {stat.label}
-                                    </div>
-                                    <div className="text-sm text-gray-500 font-neuhas">
-                                        {stat.description}
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-                </div>
-            </section>
-
             {/* ============ ABOUT SECTION ============ */}
             <section className="py-20 sm:py-24 md:py-32 bg-gray-50">
                 <div className="px-4 sm:px-6 md:px-8 lg:px-16 xl:px-20">

@@ -873,7 +873,7 @@ export function OurStrength() {
                     <div className="mt-12 grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
                         <div className="flex items-center justify-center space-x-3">
                             <Phone className="w-5 h-5 text-blue-800" />
-                            <span className="font-neuhas text-gray-700">+91 79357 03085</span>
+                            <span className="font-neuhas text-gray-700">+91 97237 23322</span>
                         </div>
                         <div className="flex items-center justify-center space-x-3">
                             <Mail className="w-5 h-5 text-blue-800" />

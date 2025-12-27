@@ -416,7 +416,7 @@ export default function PrivacyPolicyPage() {
                                 <div>
                                     <p className="font-semibold text-gray-900 font-apfel2 mb-1">Phone:</p>
                                     <a href="tel:+917935703085" className="text-blue-800 hover:underline font-neuhas">
-                                        +91 79357 03085
+                                        +91 97237 23322
                                     </a>
                                 </div>
                             </div>

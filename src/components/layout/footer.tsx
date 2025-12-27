@@ -1,17 +1,21 @@
 // components/Footer.tsx
 "use client";
 
-import { Linkedin, Facebook, Twitter, Youtube, Instagram, Phone, Mail, MapPin, ArrowRight, ExternalLink } from "lucide-react";
+import { Linkedin, Facebook, Twitter, Youtube, Instagram, Phone, Mail, MapPin, ArrowRight, ExternalLink, Loader2, CheckCircle, AlertCircle } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
-import { useRouter, usePathname } from "next/navigation";
 import { useState } from "react";
 
 // ============ DATA MATCHING HEADER ============
 const soltechVerticals = [
+    { name: "MrCCTV ", slug: "mrcctv ", url: "#" },
     { name: "BizAI Hacks", slug: "bizaihacks", url: "https://bizaihacks.com" },
     { name: "SOLTECH Nexus", slug: "soltechnexus", url: "https://soltechnexus.com" },
     { name: "SOLTECH 360 Ads", slug: "soltech360ads", url: "https://soltech360ads.com" },
+    { name: "Soltech Talent Hub ", slug: "soltech-talent-hub ", url: "#" },
+    { name: "Soltech Biz Solutions ", slug: "soltech-biz-solutions ", url: "#" },
+    { name: "Soltech Tronix ", slug: "soltech-tronix ", url: "#" },
+    { name: "Soltech Virtual CTO", slug: "soltech-virtual-cto", url: "#" },
 ];
 
 const technologiesExpert = [
@@ -32,27 +36,86 @@ const businessIndustries = [
     { title: "Agriculture & Allied", slug: "agriculture" },
 ];
 
-export function Footer() {
-    const router = useRouter();
-    const pathname = usePathname();
-    const [email, setEmail] = useState("");
-    const [subscribeStatus, setSubscribeStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
+type SubscribeStatus = "idle" | "loading" | "success" | "error";
 
+export function Footer() {
+    const [email, setEmail] = useState("");
+    const [subscribeStatus, setSubscribeStatus] = useState<SubscribeStatus>("idle");
+    const [message, setMessage] = useState("");
+
+    // ✅ BREVO NEWSLETTER SUBSCRIPTION - Your existing API
     const handleSubscribe = async (e: React.FormEvent) => {
         e.preventDefault();
-        if (!email) return;
         
+        if (!email) {
+            setMessage("Please enter your email address");
+            setSubscribeStatus("error");
+            return;
+        }
+
+        // Basic email validation
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email)) {
+            setMessage("Please enter a valid email address");
+            setSubscribeStatus("error");
+            return;
+        }
+
         setSubscribeStatus("loading");
-        
-        // Simulate API call - Replace with your actual newsletter API
-        setTimeout(() => {
-            setSubscribeStatus("success");
-            setEmail("");
-            setTimeout(() => setSubscribeStatus("idle"), 3000);
-        }, 1000);
+        setMessage("");
+
+        try {
+            // ✅ Call your existing API route
+            const response = await fetch("/api/newsletter", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ email }),
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                // Success
+                setSubscribeStatus("success");
+                setMessage(data.message || "Subscribed successfully! 🎉");
+                setEmail("");
+                
+                // Reset after 5 seconds
+                setTimeout(() => {
+                    setSubscribeStatus("idle");
+                    setMessage("");
+                }, 5000);
+            } else {
+                // Error from API
+                setSubscribeStatus("error");
+                
+                // Handle duplicate email
+                if (data.error?.includes("Contact already exist")) {
+                    setMessage("You're already subscribed! 📧");
+                } else {
+                    setMessage(data.error || "Failed to subscribe. Please try again.");
+                }
+                
+                setTimeout(() => {
+                    setSubscribeStatus("idle");
+                    setMessage("");
+                }, 5000);
+            }
+        } catch (error) {
+            console.error("Subscription error:", error);
+            setSubscribeStatus("error");
+            setMessage("Network error. Please try again.");
+            
+            setTimeout(() => {
+                setSubscribeStatus("idle");
+                setMessage("");
+            }, 5000);
+        }
     };
 
-    // ============ FOOTER LINKS (Matching Header) ============
+    // ============ FOOTER LINKS ============
     const footerLinks = {
         verticals: [
             { name: "All Verticals", href: "/verticals" },
@@ -66,16 +129,12 @@ export function Footer() {
             { name: "All Industries", href: "/industries" },
             ...businessIndustries.map((b) => ({ name: b.title, href: `/industries/${b.slug}` })),
         ],
-        company: [
-            { name: "About Us", href: "/about-us" },
-            { name: "Contact", href: "/contact" },
-        ],
     };
 
     const legalLinks = [
         { name: "Privacy Policy", href: "/privacy" },
         { name: "Terms of Service", href: "/terms-of-use" },
-        { name: "Cookie Policy", href: "/cookie-policy" },
+        // { name: "Cookie Policy", href: "/cookie-policy" },
     ];
 
     const socialLinks = [
@@ -107,32 +166,80 @@ export function Footer() {
                                     <input
                                         type="email"
                                         value={email}
-                                        onChange={(e) => setEmail(e.target.value)}
+                                        onChange={(e) => {
+                                            setEmail(e.target.value);
+                                            // Clear error when typing
+                                            if (subscribeStatus === "error") {
+                                                setSubscribeStatus("idle");
+                                                setMessage("");
+                                            }
+                                        }}
                                         placeholder="Enter your email address"
-                                        className="w-full px-5 py-3.5 rounded-full bg-white/10 border border-white/20 text-white placeholder:text-blue-200 focus:outline-none focus:ring-2 focus:ring-white/50 font-neuhas"
+                                        className={`w-full px-5 py-3.5 rounded-full bg-white/10 border text-white placeholder:text-blue-200 focus:outline-none focus:ring-2 focus:ring-white/50 font-neuhas transition-colors ${
+                                            subscribeStatus === "error" 
+                                                ? "border-red-400" 
+                                                : "border-white/20"
+                                        }`}
+                                        disabled={subscribeStatus === "loading"}
                                         required
                                     />
                                 </div>
                                 <button
                                     type="submit"
-                                    disabled={subscribeStatus === "loading"}
-                                    className="px-8 py-3.5 bg-white text-blue-800 font-semibold rounded-full hover:bg-gray-100 transition-colors font-neuhas flex items-center justify-center gap-2 disabled:opacity-70"
+                                    id="subscribe"
+                                    disabled={subscribeStatus === "loading" || subscribeStatus === "success"}
+                                    className={`px-8 py-3.5 font-semibold rounded-full transition-all font-neuhas flex items-center justify-center gap-2 min-w-[160px] ${
+                                        subscribeStatus === "success"
+                                            ? "bg-green-500 text-white"
+                                            : subscribeStatus === "error"
+                                            ? "bg-red-500 text-white hover:bg-red-600"
+                                            : "bg-white text-blue-800 hover:bg-gray-100"
+                                    } disabled:opacity-70 disabled:cursor-not-allowed`}
                                 >
                                     {subscribeStatus === "loading" ? (
-                                        <span>Subscribing...</span>
+                                        <>
+                                            <Loader2 className="w-4 h-4 animate-spin" />
+                                            <span>Subscribing...</span>
+                                        </>
                                     ) : subscribeStatus === "success" ? (
-                                        <span>Subscribed! ✓</span>
+                                        <>
+                                            <CheckCircle className="w-4 h-4" />
+                                            <span>Subscribed!</span>
+                                        </>
+                                    ) : subscribeStatus === "error" ? (
+                                        <>
+                                            <AlertCircle className="w-4 h-4" />
+                                            <span>Try Again</span>
+                                        </>
                                     ) : (
                                         <>
-                                            Subscribe
+                                            <span>Subscribe</span>
                                             <ArrowRight className="w-4 h-4" />
                                         </>
                                     )}
                                 </button>
                             </form>
-                            <p className="text-blue-300 text-xs mt-3 font-neuhas">
-                                By subscribing, you agree to our Privacy Policy. Unsubscribe anytime.
-                            </p>
+                            
+                            {/* ✅ STATUS MESSAGES */}
+                            <div className="mt-3 min-h-[24px]">
+                                {message ? (
+                                    <p className={`text-sm font-neuhas flex items-center gap-1.5 ${
+                                        subscribeStatus === "error" 
+                                            ? "text-red-300" 
+                                            : subscribeStatus === "success"
+                                            ? "text-green-300"
+                                            : "text-blue-300"
+                                    }`}>
+                                        {subscribeStatus === "error" && <AlertCircle className="w-4 h-4" />}
+                                        {subscribeStatus === "success" && <CheckCircle className="w-4 h-4" />}
+                                        {message}
+                                    </p>
+                                ) : (
+                                    <p className="text-blue-300 text-xs font-neuhas">
+                                        By subscribing, you agree to our Privacy Policy. Unsubscribe anytime.
+                                    </p>
+                                )}
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -164,7 +271,7 @@ export function Footer() {
                             </ul>
                         </div>
 
-       {/* Verticals */}
+                        {/* Verticals */}
                         <div className="w-full">
                             <h3 className="text-blue-800 font-bold text-lg md:text-xl leading-[30px] tracking-[0.5px] mb-4 md:mb-6 font-apfel2">
                                 Verticals
@@ -183,7 +290,7 @@ export function Footer() {
                             </ul>
                         </div>
 
-                        {/* Business / Industries */}
+                        {/* Industries */}
                         <div className="w-full">
                             <h3 className="text-blue-800 font-bold text-lg md:text-xl leading-[30px] tracking-[0.5px] mb-4 md:mb-6 font-apfel2">
                                 Industries
@@ -201,8 +308,6 @@ export function Footer() {
                                 ))}
                             </ul>
                         </div>
-
-                     
 
                         {/* External Websites */}
                         <div className="w-full">
@@ -228,11 +333,11 @@ export function Footer() {
                     </div>
                 </div>
 
-                {/* BOTTOM SECTION - Contact & Info */}
+                {/* BOTTOM SECTION */}
                 <div className="py-10 md:py-14">
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-10 lg:gap-12">
 
-                        {/* 1. Logo & Description */}
+                        {/* Logo & Description */}
                         <div className="space-y-4 w-full lg:col-span-1">
                             <Link href="/">
                                 <Image
@@ -268,12 +373,12 @@ export function Footer() {
                             </div>
                         </div>
 
-                        {/* 2. Contact Info */}
+                        {/* Contact Info */}
                         <div className="space-y-4 w-full">
                             <h4 className="text-blue-800 font-semibold text-lg font-apfel2">Contact Us</h4>
                             <div className="space-y-4">
                                 <a
-                                    href="tel:+917935703085"
+                                    href="tel:+919723723322"
                                     className="flex items-start gap-3 text-gray-600 hover:text-blue-800 transition-colors group"
                                 >
                                     <div className="w-9 h-9 bg-blue-50 rounded-full flex items-center justify-center flex-shrink-0 group-hover:bg-blue-100 transition-colors">
@@ -281,12 +386,12 @@ export function Footer() {
                                     </div>
                                     <div>
                                         <p className="text-xs text-gray-500 font-neuhas">Phone</p>
-                                        <span className="text-sm font-neuhas font-medium">+91 79357 03085</span>
+                                        <span className="text-sm font-neuhas font-medium">+91 97237 23322</span>
                                     </div>
                                 </a>
 
                                 <a
-                                    href="mailto:invester@soltechtechservices.com"
+                                    href="mailto:investor@soltechtechservices.com"
                                     className="flex items-start gap-3 text-gray-600 hover:text-blue-800 transition-colors group"
                                 >
                                     <div className="w-9 h-9 bg-blue-50 rounded-full flex items-center justify-center flex-shrink-0 group-hover:bg-blue-100 transition-colors">
@@ -294,13 +399,13 @@ export function Footer() {
                                     </div>
                                     <div>
                                         <p className="text-xs text-gray-500 font-neuhas">Email</p>
-                                        <span className="text-sm font-neuhas font-medium">invester@soltechtechservices.com</span>
+                                        <span className="text-sm font-neuhas font-medium">investor@soltechtechservices.com</span>
                                     </div>
                                 </a>
                             </div>
                         </div>
 
-                        {/* 3. Address */}
+                        {/* Address */}
                         <div className="space-y-4 w-full">
                             <h4 className="text-blue-800 font-semibold text-lg font-apfel2">Registered Office</h4>
                             <div className="flex items-start gap-3 text-gray-600">
@@ -316,7 +421,7 @@ export function Footer() {
                             </div>
                         </div>
 
-                        {/* 4. Legal Links */}
+                        {/* Legal Links */}
                         <div className="space-y-4 w-full">
                             <h4 className="text-blue-800 font-semibold text-lg font-apfel2">Legal</h4>
                             <ul className="space-y-2 md:space-y-3">
@@ -331,10 +436,7 @@ export function Footer() {
                                     </li>
                                 ))}
                             </ul>
-                            
-                            
                         </div>
-
                     </div>
                 </div>
 

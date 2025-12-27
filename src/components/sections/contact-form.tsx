@@ -1,278 +1,495 @@
-'use client';
+// components/ContactForm.tsx
+"use client";
 
-import { useState, useEffect } from 'react';
-import { submitContactForm } from '@/lib/api/contact';
-import { ArrowRight, CheckCircle, XCircle } from 'lucide-react';
-import Link from 'next/link';
-import { cn } from '@/lib/utils';
+import { useState, useEffect } from "react";
+import { 
+  User, 
+  Mail, 
+  Phone, 
+  Globe, 
+  Building2, 
+  Users, 
+  MapPin, 
+  Briefcase,
+  Loader2,
+  CheckCircle,
+  AlertCircle,
+  Send
+} from "lucide-react";
+import { indianStates, citiesByState, employeeRanges, industries } from "@/lib/indianLocations";
 
-export default function ContactForm() {
-    const [formData, setFormData] = useState({
-        name: '',
-        email: '',
-        phone: '',
-        company: '',
-        project_type: '',
-        message: '',
-        budget: '',
-        timeline: '',
-        how_found: ''
-    });
+interface FormData {
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone: string;
+  website: string;
+  state: string;
+  city: string;
+  organizationName: string;
+  noOfEmployees: string;
+  industry: string;
+  message: string;
+}
 
-    const [isSubmitting, setIsSubmitting] = useState(false);
-    const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
-    const [errorMessage, setErrorMessage] = useState('');
+interface ContactFormProps {
+  source?: string;
+  className?: string;
+}
 
-    // Auto-hide success message after 5 seconds
-    useEffect(() => {
-        if (submitStatus === 'success') {
-            const timer = setTimeout(() => {
-                setSubmitStatus('idle');
-            }, 5000);
-            return () => clearTimeout(timer);
-        }
-    }, [submitStatus]);
+type FormStatus = "idle" | "loading" | "success" | "error";
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-        const { name, value } = e.target;
-        setFormData(prev => ({ ...prev, [name]: value }));
-    };
+export default function ContactForm({ source = "Contact Page", className = "" }: ContactFormProps) {
+  const [formData, setFormData] = useState<FormData>({
+    firstName: "",
+    lastName: "",
+    email: "",
+    phone: "",
+    website: "",
+    state: "",
+    city: "",
+    organizationName: "",
+    noOfEmployees: "",
+    industry: "",
+    message: "",
+  });
 
-    const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault();
-        setIsSubmitting(true);
-        setSubmitStatus('idle');
-        setErrorMessage('');
+  const [availableCities, setAvailableCities] = useState<string[]>([]);
+  const [status, setStatus] = useState<FormStatus>("idle");
+  const [errorMessage, setErrorMessage] = useState("");
+  const [errors, setErrors] = useState<Partial<FormData>>({});
 
-        try {
-            const result = await submitContactForm(formData);
+  // Update cities when state changes
+  useEffect(() => {
+    if (formData.state) {
+      setAvailableCities(citiesByState[formData.state] || []);
+      setFormData(prev => ({ ...prev, city: "" }));
+    } else {
+      setAvailableCities([]);
+    }
+  }, [formData.state]);
 
-            if (result.success) {
-                setSubmitStatus('success');
-                setFormData({
-                    name: '',
-                    email: '',
-                    phone: '',
-                    company: '',
-                    project_type: '',
-                    message: '',
-                    budget: '',
-                    timeline: '',
-                    how_found: ''
-                });
-            } else {
-                setSubmitStatus('error');
-                setErrorMessage(result.error || 'Failed to submit form. Please try again.');
-            }
-        } catch (error) {
-            setSubmitStatus('error');
-            setErrorMessage('An unexpected error occurred. Please try again later.');
-        } finally {
-            setIsSubmitting(false);
-        }
-    };
+  // Handle input changes
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
+  ) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
+    
+    // Clear error for this field
+    if (errors[name as keyof FormData]) {
+      setErrors(prev => ({ ...prev, [name]: "" }));
+    }
+  };
 
-    return (
-        <div className="relative font-apfel2">
-            {/* Floating Status Messages */}
-            {submitStatus !== 'idle' && (
-                <div className={`fixed top-20 right-4 z-50 transition-all duration-500 ${submitStatus === 'success' ? 'translate-x-0' : submitStatus === 'error' ? 'translate-x-0' : 'translate-x-[400px]'
-                    }`}>
-                    {submitStatus === 'success' && (
-                        <div className="bg-white rounded-lg shadow-2xl p-6 min-w-[350px] border-l-4 border-green-500 animate-slide-in">
-                            <div className="flex items-start">
-                                <CheckCircle className="h-6 w-6 text-green-500 flex-shrink-0 mt-0.5" />
-                                <div className="ml-3">
-                                    <p className="text-lg font-semibold text-gray-900">Success!</p>
-                                    <p className="text-gray-600 mt-1">We've received your inquiry and will get back to you shortly.</p>
-                                </div>
-                            </div>
-                        </div>
-                    )}
+  // Validate form
+  const validateForm = (): boolean => {
+    const newErrors: Partial<FormData> = {};
 
-                    {submitStatus === 'error' && (
-                        <div className="bg-white rounded-lg shadow-2xl p-6 min-w-[350px] border-l-4 border-red-500 animate-slide-in">
-                            <div className="flex items-start">
-                                <XCircle className="h-6 w-6 text-blue-700 flex-shrink-0 mt-0.5" />
-                                <div className="ml-3">
-                                    <p className="text-lg font-semibold text-gray-900">Error</p>
-                                    <p className="text-gray-600 mt-1">{errorMessage}</p>
-                                </div>
-                            </div>
-                        </div>
-                    )}
-                </div>
-            )}
+    if (!formData.firstName.trim()) {
+      newErrors.firstName = "First name is required";
+    }
 
-            <form onSubmit={handleSubmit} className="space-y-6">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    {/* Name */}
-                    <div>
-                        <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2">
-                            Full Name <span className="text-blue-700">*</span>
-                        </label>
-                        <input
-                            type="text"
-                            id="name"
-                            name="name"
-                            value={formData.name}
-                            onChange={handleChange}
-                            required
-                            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-800 focus:border-transparent transition-all"
-                            placeholder="John Doe"
-                        />
-                    </div>
+    if (!formData.email.trim()) {
+      newErrors.email = "Email is required";
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+      newErrors.email = "Please enter a valid email";
+    }
 
-                    {/* Email */}
-                    <div>
-                        <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
-                            Email Address <span className="text-blue-700">*</span>
-                        </label>
-                        <input
-                            type="email"
-                            id="email"
-                            name="email"
-                            value={formData.email}
-                            onChange={handleChange}
-                            required
-                            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-800 focus:border-transparent transition-all"
-                            placeholder="john@example.com"
-                        />
-                    </div>
+    if (formData.phone && !/^[+]?[\d\s-]{10,}$/.test(formData.phone.replace(/\s/g, ""))) {
+      newErrors.phone = "Please enter a valid phone number";
+    }
 
-                    {/* Phone */}
-                    <div>
-                        <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-2">
-                            Phone Number
-                        </label>
-                        <input
-                            type="tel"
-                            id="phone"
-                            name="phone"
-                            value={formData.phone}
-                            onChange={handleChange}
-                            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-800 focus:border-transparent transition-all"
-                            placeholder="+91 98765 43210"
-                        />
-                    </div>
+    if (formData.website && !/^(https?:\/\/)?([\da-z.-]+)\.([a-z.]{2,6})([/\w .-]*)*\/?$/.test(formData.website)) {
+      newErrors.website = "Please enter a valid URL";
+    }
 
-                    {/* Company */}
-                    <div>
-                        <label htmlFor="company" className="block text-sm font-medium text-gray-700 mb-2">
-                            Company/Organization
-                        </label>
-                        <input
-                            type="text"
-                            id="company"
-                            name="company"
-                            value={formData.company}
-                            onChange={handleChange}
-                            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-800 focus:border-transparent transition-all"
-                            placeholder="ABC Infrastructure Ltd."
-                        />
-                    </div>
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
 
-                    {/* Project Type */}
-                    <div>
-                        <label htmlFor="project_type" className="block text-sm font-medium text-gray-700 mb-2">
-                            Project Type
-                        </label>
-                        <select
-                            id="project_type"
-                            name="project_type"
-                            value={formData.project_type}
-                            onChange={handleChange}
-                            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-800 focus:border-transparent transition-all appearance-none bg-white"
-                        >
-                            <option value="">Select a project type</option>
-                            <option value="Border Infrastructure">Border Infrastructure</option>
-                            <option value="Road Construction">Road Construction</option>
-                            <option value="Civil Contracts">Civil Contracts</option>
-                            <option value="Renewable Energy">Renewable Energy</option>
-                            <option value="Other">Other</option>
-                        </select>
-                    </div>
+  // Handle form submission
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
 
-                    {/* Budget */}
-                    <div>
-                        <label htmlFor="budget" className="block text-sm font-medium text-gray-700 mb-2">
-                            Estimated Budget
-                        </label>
-                        <select
-                            id="budget"
-                            name="budget"
-                            value={formData.budget}
-                            onChange={handleChange}
-                            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-800 focus:border-transparent transition-all appearance-none bg-white"
-                        >
-                            <option value="">Select budget range</option>
-                            <option value="Under ₹10 Lakhs">Under ₹10 Lakhs</option>
-                            <option value="₹10 Lakhs - ₹50 Lakhs">₹10 Lakhs - ₹50 Lakhs</option>
-                            <option value="₹50 Lakhs - ₹1 Crore">₹50 Lakhs - ₹1 Crore</option>
-                            <option value="₹1 Crore - ₹5 Crore">₹1 Crore - ₹5 Crore</option>
-                            <option value="₹5 Crore - ₹10 Crore">₹5 Crore - ₹10 Crore</option>
-                            <option value="Above ₹10 Crore">Above ₹10 Crore</option>
-                        </select>
-                    </div>
+    if (!validateForm()) {
+      return;
+    }
 
-                    {/* Message */}
-                    <div className="md:col-span-2">
-                        <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-2">
-                            Project Details <span className="text-blue-700">*</span>
-                        </label>
-                        <textarea
-                            id="message"
-                            name="message"
-                            value={formData.message}
-                            onChange={handleChange}
-                            required
-                            rows={6}
-                            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-800 focus:border-transparent transition-all resize-none"
-                            placeholder="Please describe your project requirements, location, and any specific details..."
-                        ></textarea>
-                    </div>
-                </div>
-                <div className="mt-8 sm:mt-10 md:mt-12 md:-ml-8">
-                    <button
-                        type="submit"
-                        disabled={isSubmitting}
-                    // className="w-full md:w-auto px-10 py-4 bg-blue-800 text-white font-semibold rounded-lg hover:bg-red-700 transition-all duration-300 disabled:bg-gray-400 disabled:cursor-not-allowed flex items-center justify-center shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
-                    >
+    setStatus("loading");
+    setErrorMessage("");
 
-                        <div
-                            className={cn(
-                                'group relative inline-flex items-center justify-center overflow-hidden rounded-full',
-                                'px-4 sm:px-5 md:px-6 py-2 sm:py-2.5',
-                                'text-sm sm:text-base font-semibold text-blue-800',
-                                'transition-all duration-500 ease-out',
-                                'min-h-[44px] sm:min-h-[48px]',
-                                'w-full sm:w-auto max-w-xs sm:max-w-none mx-auto md:mx-0'
-                            )}
-                        >
-                            <span className="absolute inset-0 rounded-full bg-blue-800 scale-x-0 group-hover:scale-x-100 origin-center transition-transform duration-500 ease-out" />
-                            <span className="relative z-10 flex items-center justify-center md:justify-start">
-                                <span className="flex items-center justify-center rounded-full bg-blue-800 text-white transition-all duration-500 group-hover:w-0 group-hover:opacity-0 group-hover:scale-0 mr-2 sm:mr-3 group-hover:mr-0 h-7 w-7 sm:h-8 sm:w-8 flex-shrink-0">
-                                    <ArrowRight className="h-4 w-4 sm:h-5 sm:w-5" />
-                                </span>
-                                <span className="whitespace-nowrap transition-colors duration-500 group-hover:text-white font-neuhas text-[15px] sm:text-[16px] md:text-[20px] leading-[48`px]">
-                                    {isSubmitting ? (
-                                        <>
-                                            <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                                                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                                                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                                            </svg>
-                                            Submitting...
-                                        </>
-                                    ) : (
-                                        'Submit Inquiry'
-                                    )}
-                                </span>
-                                <ArrowRight className="h-4 w-4 sm:h-5 sm:w-5 opacity-0 transition-all duration-500 group-hover:w-4 sm:group-hover:w-5 group-hover:opacity-100 group-hover:text-white group-hover:ml-2 sm:group-hover:ml-3" />
-                            </span>
-                        </div>
-                    </button>
-                </div>
-            </form>
+    try {
+      const response = await fetch("/api/send-lead", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          ...formData,
+          source: source,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok && data.success) {
+        setStatus("success");
+        // Reset form
+        setFormData({
+          firstName: "",
+          lastName: "",
+          email: "",
+          phone: "",
+          website: "",
+          state: "",
+          city: "",
+          organizationName: "",
+          noOfEmployees: "",
+          industry: "",
+          message: "",
+        });
+
+        // Reset status after 5 seconds
+        setTimeout(() => {
+          setStatus("idle");
+        }, 5000);
+      } else {
+        setStatus("error");
+        setErrorMessage(data.error || "Failed to submit. Please try again.");
+        
+        setTimeout(() => {
+          setStatus("idle");
+          setErrorMessage("");
+        }, 5000);
+      }
+    } catch (error) {
+      console.error("Form submission error:", error);
+      setStatus("error");
+      setErrorMessage("Network error. Please check your connection.");
+      
+      setTimeout(() => {
+        setStatus("idle");
+        setErrorMessage("");
+      }, 5000);
+    }
+  };
+
+  // Input field component
+  const InputField = ({
+    label,
+    name,
+    type = "text",
+    placeholder,
+    required = false,
+    icon: Icon,
+  }: {
+    label: string;
+    name: keyof FormData;
+    type?: string;
+    placeholder: string;
+    required?: boolean;
+    icon: any;
+  }) => (
+    <div className="space-y-1.5">
+      <label htmlFor={name} className="block text-sm font-medium text-gray-700 font-neuhas">
+        {label} {required && <span className="text-red-500">*</span>}
+      </label>
+      <div className="relative">
+        <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+          <Icon className="h-5 w-5 text-gray-400" />
         </div>
-    );
+        <input
+          type={type}
+          id={name}
+          name={name}
+          value={formData[name]}
+          onChange={handleChange}
+          placeholder={placeholder}
+          required={required}
+          className={`block w-full pl-10 pr-4 py-3 border rounded-lg bg-white text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all font-neuhas ${
+            errors[name] ? "border-red-500" : "border-gray-300"
+          }`}
+        />
+      </div>
+      {errors[name] && (
+        <p className="text-red-500 text-xs mt-1 flex items-center gap-1">
+          <AlertCircle className="w-3 h-3" />
+          {errors[name]}
+        </p>
+      )}
+    </div>
+  );
+
+  // Select field component
+  const SelectField = ({
+    label,
+    name,
+    options,
+    placeholder,
+    required = false,
+    icon: Icon,
+    disabled = false,
+  }: {
+    label: string;
+    name: keyof FormData;
+    options: string[];
+    placeholder: string;
+    required?: boolean;
+    icon: any;
+    disabled?: boolean;
+  }) => (
+    <div className="space-y-1.5">
+      <label htmlFor={name} className="block text-sm font-medium text-gray-700 font-neuhas">
+        {label} {required && <span className="text-red-500">*</span>}
+      </label>
+      <div className="relative">
+        <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+          <Icon className="h-5 w-5 text-gray-400" />
+        </div>
+        <select
+          id={name}
+          name={name}
+          value={formData[name]}
+          onChange={handleChange}
+          required={required}
+          disabled={disabled}
+          className={`block w-full pl-10 pr-4 py-3 border rounded-lg bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all font-neuhas appearance-none cursor-pointer ${
+            errors[name] ? "border-red-500" : "border-gray-300"
+          } ${disabled ? "bg-gray-100 cursor-not-allowed" : ""} ${
+            !formData[name] ? "text-gray-400" : ""
+          }`}
+        >
+          <option value="">{placeholder}</option>
+          {options.map((option) => (
+            <option key={option} value={option} className="text-gray-900">
+              {option}
+            </option>
+          ))}
+        </select>
+        <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+          <svg className="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+          </svg>
+        </div>
+      </div>
+      {errors[name] && (
+        <p className="text-red-500 text-xs mt-1 flex items-center gap-1">
+          <AlertCircle className="w-3 h-3" />
+          {errors[name]}
+        </p>
+      )}
+    </div>
+  );
+
+  return (
+    <div className={`bg-white rounded-2xl shadow-xl p-6 md:p-8 ${className}`}>
+      {/* Header */}
+      <div className="mb-8">
+        <h2 className="text-2xl md:text-3xl font-bold text-gray-900 font-apfel2">
+          Get in Touch
+        </h2>
+        <p className="text-gray-600 mt-2 font-neuhas">
+          Fill out the form below and we'll get back to you shortly.
+        </p>
+      </div>
+
+      {/* Success Message */}
+      {status === "success" && (
+        <div className="mb-6 p-4 bg-green-50 border border-green-200 rounded-lg flex items-center gap-3">
+          <CheckCircle className="w-6 h-6 text-green-600 flex-shrink-0" />
+          <div>
+            <p className="text-green-800 font-semibold font-neuhas">Thank you for contacting us!</p>
+            <p className="text-green-600 text-sm font-neuhas">We'll get back to you within 24 hours.</p>
+          </div>
+        </div>
+      )}
+
+      {/* Error Message */}
+      {status === "error" && errorMessage && (
+        <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg flex items-center gap-3">
+          <AlertCircle className="w-6 h-6 text-red-600 flex-shrink-0" />
+          <div>
+            <p className="text-red-800 font-semibold font-neuhas">Submission Failed</p>
+            <p className="text-red-600 text-sm font-neuhas">{errorMessage}</p>
+          </div>
+        </div>
+      )}
+
+      <form onSubmit={handleSubmit} className="space-y-6">
+        {/* Personal Information */}
+        <div>
+          <h3 className="text-lg font-semibold text-gray-800 mb-4 font-apfel2 flex items-center gap-2">
+            <User className="w-5 h-5 text-blue-600" />
+            Personal Information
+          </h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <InputField
+              label="First Name"
+              name="firstName"
+              placeholder="John"
+              required
+              icon={User}
+            />
+            <InputField
+              label="Last Name"
+              name="lastName"
+              placeholder="Doe"
+              icon={User}
+            />
+          </div>
+        </div>
+
+        {/* Contact Information */}
+        <div>
+          <h3 className="text-lg font-semibold text-gray-800 mb-4 font-apfel2 flex items-center gap-2">
+            <Mail className="w-5 h-5 text-blue-600" />
+            Contact Information
+          </h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <InputField
+              label="Email"
+              name="email"
+              type="email"
+              placeholder="john@example.com"
+              required
+              icon={Mail}
+            />
+            <InputField
+              label="Phone"
+              name="phone"
+              type="tel"
+              placeholder="+91 97237 23322"
+              icon={Phone}
+            />
+            <div className="md:col-span-2">
+              <InputField
+                label="Website (Optional)"
+                name="website"
+                type="url"
+                placeholder="https://yourwebsite.com"
+                icon={Globe}
+              />
+            </div>
+          </div>
+        </div>
+
+        {/* Location Information */}
+        <div>
+          <h3 className="text-lg font-semibold text-gray-800 mb-4 font-apfel2 flex items-center gap-2">
+            <MapPin className="w-5 h-5 text-blue-600" />
+            Location Information
+          </h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <SelectField
+              label="State"
+              name="state"
+              options={indianStates}
+              placeholder="Select State"
+              icon={MapPin}
+            />
+            <SelectField
+              label="City"
+              name="city"
+              options={availableCities}
+              placeholder={formData.state ? "Select City" : "Select State First"}
+              icon={MapPin}
+              disabled={!formData.state}
+            />
+          </div>
+        </div>
+
+        {/* Organization Information */}
+        <div>
+          <h3 className="text-lg font-semibold text-gray-800 mb-4 font-apfel2 flex items-center gap-2">
+            <Building2 className="w-5 h-5 text-blue-600" />
+            Organization Information
+          </h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <InputField
+              label="Organization Name"
+              name="organizationName"
+              placeholder="Your Company Name"
+              icon={Building2}
+            />
+            <SelectField
+              label="No. of Employees"
+              name="noOfEmployees"
+              options={employeeRanges}
+              placeholder="Select Range"
+              icon={Users}
+            />
+            <div className="md:col-span-2">
+              <SelectField
+                label="Industry"
+                name="industry"
+                options={industries}
+                placeholder="Select Industry"
+                icon={Briefcase}
+              />
+            </div>
+          </div>
+        </div>
+
+        {/* Message (Optional) */}
+        <div>
+          <label htmlFor="message" className="block text-sm font-medium text-gray-700 font-neuhas mb-1.5">
+            Message (Optional)
+          </label>
+          <textarea
+            id="message"
+            name="message"
+            value={formData.message}
+            onChange={handleChange}
+            rows={4}
+            placeholder="Tell us about your requirements..."
+            className="block w-full px-4 py-3 border border-gray-300 rounded-lg bg-white text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all font-neuhas resize-none"
+          />
+        </div>
+
+        {/* Submit Button */}
+        <button
+          type="submit"
+          disabled={status === "loading" || status === "success"}
+          className={`w-full py-4 px-6 rounded-lg font-semibold text-white flex items-center justify-center gap-2 transition-all font-neuhas ${
+            status === "success"
+              ? "bg-green-600 cursor-default"
+              : status === "loading"
+              ? "bg-blue-400 cursor-wait"
+              : "bg-blue-600 hover:bg-blue-700 active:scale-[0.98]"
+          } disabled:opacity-70`}
+        >
+          {status === "loading" ? (
+            <>
+              <Loader2 className="w-5 h-5 animate-spin" />
+              Submitting...
+            </>
+          ) : status === "success" ? (
+            <>
+              <CheckCircle className="w-5 h-5" />
+              Submitted Successfully!
+            </>
+          ) : (
+            <>
+              <Send className="w-5 h-5" />
+              Submit Inquiry
+            </>
+          )}
+        </button>
+
+        {/* Privacy Note */}
+        <p className="text-xs text-gray-500 text-center font-neuhas">
+          By submitting this form, you agree to our{" "}
+          <a href="/privacy" className="text-blue-600 hover:underline">
+            Privacy Policy
+          </a>{" "}
+          and{" "}
+          <a href="/terms-of-use" className="text-blue-600 hover:underline">
+            Terms of Service
+          </a>
+          .
+        </p>
+      </form>
+    </div>
+  );
 }
