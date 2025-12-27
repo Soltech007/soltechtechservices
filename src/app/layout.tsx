@@ -142,7 +142,21 @@ export default function RootLayout({
     <html lang="en" className="scroll-smooth">
       {/* ❌ REMOVE <head> tag completely */}
       <body className="font-body bg-background text-foreground antialiased">
-        {/* ✅ Schema scripts body me top pe */}
+        
+        {/* ✅ Google Tag Manager (Main Script) */}
+        {/* <!-- Google Tag Manager --> */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-T7CKJM9S');`,
+          }}
+        />
+        {/* <!-- End Google Tag Manager --> */}
+
+        {/* Schema Scripts */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
@@ -157,10 +171,24 @@ export default function RootLayout({
           }}
           suppressHydrationWarning
         />
+        
         <ProgressBar />
         {children}
         <Toaster />
+
+        {/* ✅ Google Tag Manager (noscript fallback) */}
+        {/* <!-- Google Tag Manager (noscript) --> */}
+        <noscript>
+          <iframe 
+            src="https://www.googletagmanager.com/ns.html?id=GTM-T7CKJM9S"
+            height="0" 
+            width="0" 
+            style={{ display: "none", visibility: "hidden" }}
+          ></iframe>
+        </noscript>
+        {/* <!-- End Google Tag Manager (noscript) --> */}
+
       </body>
-    </html>
+    </html>               
   );
 }
